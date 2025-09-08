@@ -13,7 +13,7 @@ class EntityBasic:
     Only tracks Name, Short Code, Initiative, and Conditions.
     Entity name: max 64 characters, all ASCII characters allowed.
     Short code: always 4 characters, if less than 4, then padded with space characters to the right. Only latin
-    characters without diacritics, digits, and space characters allowed.
+    characters without diacritics, digits, and space characters allowed. Can't be 4 spaces.
     """
     def __init__(self, entity_name: str, short_code: str, initiative: int):
         # argument validation
@@ -23,6 +23,9 @@ class EntityBasic:
         if len(short_code) > SCODE_LEN:
             raise AssertionError("Tried to create an entity, but its short code had more than " + str(SCODE_LEN) +
                                  " characters. Entity name: " + entity_name)
+        if len(short_code) < 1:
+            raise AssertionError("Tried to create an entity, but its short code was blank." +
+                                     " Entity name: " + entity_name)
         for single_char in short_code:
             if single_char not in scode_allowed_chars:
                 raise AssertionError("Tried to set short code for entity: " + entity_name + ", but the code contains" +

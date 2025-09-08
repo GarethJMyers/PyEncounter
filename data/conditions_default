@@ -1,3 +1,9 @@
+# Default conditions that an entity can have.
+# This file should not be altered by the user, the user and the software can make a different
+# file for custom conditions.
+# Blank lines and lines beginning with a "#" character are ignored.
+# All other lines are treated as a seperate possible condition.
+
 # Base conditions
 Blinded
 Charmed
