@@ -11,14 +11,14 @@ called an "entity". The types of entity tracked, and what details about them are
         - Used for basic enemies who don't have any attacks/feats that can be used only a certain number of times per
         long rest/encounter/short rest/etc.
         - Same as Player/Basic + HP, temporary HP
-    - Enemy With Cooldowns:
+    - Enemy With Charges:
         - Used for enemies that have spells/some feat that they can only use a number of times per encounter/long rest.
         - Same as Enemy + tracking of spell/feat uses
     - Legendary Enemy:
         - Legendary enemies have legendary actions and legendary resistances
         - Legendary actions reset at the start of the Legendary Enemy's turn
         - Legendary resistances don't reset over an encounter
-        - Same as Enemy With Cooldowns + legendary actions, legendary resistances
+        - Same as Enemy With Charges + legendary actions, legendary resistances
 
 Note: "short code" is 4 alphanumeric/space characters used as a shorthand for referring to the entity in the GUI.
 
@@ -38,7 +38,7 @@ Header frame:
     - Add new player/enemy
     - Start turn order tracking
     - Reset all changes to turn order (ie. reset to initiative order based on settings file)
-    - Reset all cooldowns
+    - Reset all charges
     - Export state as JSON
     - Return to main menu
 
@@ -55,6 +55,6 @@ Main frame:
         - Button to damage entity, IF IT IS OF CLASS THAT HAS SUCH
         - Button to heal entity, IF IT IS OF CLASS THAT HAS SUCH
         - Button to add temporary hit points, IF IT IS OF CLASS THAT HAS SUCH
-        - Button to reset tracked things to 0 uses
+        - Button to reset tracked charges to 0 uses
         - Button to edit entity
         - Button to remove entity

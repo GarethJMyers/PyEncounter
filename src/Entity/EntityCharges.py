@@ -1,0 +1,54 @@
+from src.Entity.EntityEnemy import EntityEnemy
+from src.Other.GLOBAL_VARS import MAX_CHARGES
+
+class EntityCharges(EntityEnemy):
+    """
+    Extends EntityEnemy to have custom charges.
+    The user adds things to track and the maximum number of charges of that thing.
+    This class also tracks the charges remaining.
+
+    What charges are tracked are given when the object is initialised. What is tracked cannot be changed after
+    initialisation. Max charges cannot be changed after initialisation. The things to be tracked are to be provided as
+    a dictionary of: key = name of thing to track, value = maximum number of charges. The maximum number of charges
+    must be greater than 0 for every thing to track.
+
+    The remaining number of charges are initialised to zero. If the remaining number of charges is attempted to be
+    reduced below zero, nothing happens (no error message).
+    """
+
+    def __init__(
+            self,
+            entity_name: str,
+            short_code: str,
+            initiative: int,
+            max_hp: int,
+            charges_to_track: dict[str, int]
+    ):
+        for key, val in charges_to_track.items():
+            if val <= 0:
+                raise AssertionError("Tried to intialise EntityCharges with name " + entity_name + ", but the " +
+                                     "max charges for " + key + " were zero or less.")
+
+        self.__max_charges = charges_to_track
+        self.__current_charges = charges_to_track
+        super().__init__(entity_name, short_code, initiative, max_hp)
+
+    def reduce_charge(self, charge_name: str):
+        """Reduces the number of charges of charge_name by 1."""
+        if charge_name not in list(self.__current_charges.keys()):
+            raise AssertionError("Tried to reduce the charges for " + charge_name + " for entity " + self.__name +
+                                 ", but that is not being tracked for that entity.")
+
+        self.__current_charges[charge_name] = max(0, self.__current_charges[charge_name] - 1)
+
+    def reset_single_charge(self, charge_name:str):
+        """Reset the current charges of a single thing back to its maximum."""
+        if charge_name not in list(self.__current_charges.keys()):
+            raise AssertionError("Tried to reset the charges for " + charge_name + " for entity " + self.__name +
+                                 ", but that is not being tracked for that entity.")
+
+        self.__current_charges[charge_name] = self.__max_charges[charge_name]
+
+    def reset_all_charges(self):
+        """Resets all charges for the entity."""
+        self.__current_charges = self.__max_charges
