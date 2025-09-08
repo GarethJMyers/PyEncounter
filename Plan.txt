@@ -20,6 +20,8 @@ called an "entity". The types of entity tracked, and what details about them are
         - Legendary resistances don't reset over an encounter
         - Same as Enemy With Cooldowns + legendary actions, legendary resistances
 
+Note: "short code" is 4 alphanumeric/space characters used as a shorthand for referring to the entity in the GUI.
+
 ------------------------------------------------------------------------------------------------------------------------
 Splash Screen
 ------------------------------------------------------------------------------------------------------------------------
