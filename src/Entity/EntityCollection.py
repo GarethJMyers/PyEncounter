@@ -9,9 +9,7 @@ from typing import Union
 
 class EntityCollection:
     """
-    This class holds the entity objects and can iterate through them. It tracks the turn order, which entity's turn
-    it is, and the number of rounds that have passed. When a EntityLegendary's turn comes up, the legendary actions
-    are reset. It allows import/export of all data as a json.
+    This class holds the entity objects and can iterate through them. It allows import/export of all data as a json.
 
     Import can only occur if the entities dictionary is empty.
 
@@ -48,3 +46,37 @@ class EntityCollection:
                 i += 1
             first_less_equal = max(0, first_less_equal)
             self.__entities.insert(first_less_equal, entity)
+
+    def get_entity_names_codes(self):
+        """
+        Returns a list of tuples. Each tuple is (entity name, entity short code) for an entity. In turn order.
+        If no entities, returns empty list.
+        """
+        return_arr = []
+        if len(self.__entities) > 0:
+            for i in self.__entities:
+                return_arr.append((i.get_name(), i.get_short_code()))
+        return return_arr
+
+    def get_entity_initiatives(self):
+        """
+        Returns a list of tuples. Each tuple is (entity name, entity short code, entity initiative) for an entity.
+        In turn order. If no entities, returns empty list.
+        """
+        return_arr = []
+        if len(self.__entities) > 0:
+            for i in self.__entities:
+                return_arr.append((i.get_name(), i.get_short_code(), i.get_initiative()))
+        return return_arr
+
+    def get_single_entity(self, turn_num: int):
+        """
+        Returns single entity at zeo-indexed turn_num. If turn_num is outside range of entity list, or entity list is
+        empty, raises error.
+        """
+        if len(self.__entities) < 1:
+            raise IndexError("Tried to get entities from EntityCollection, but no entities had been added yet.")
+        if turn_num >= len(self.__entities):
+            raise IndexError("Tried to get entity " + str(turn_num) + " from EntityCollection, but not enough " +
+                             "entities had been added.")
+        return self.__entities[turn_num]
