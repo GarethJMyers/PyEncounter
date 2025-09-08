@@ -1,0 +1,54 @@
+------------------------------------------------------------------------------------------------------------------------
+Overall Goal
+------------------------------------------------------------------------------------------------------------------------
+A user is able to add a list of players/enemies and their initiatives. A screen then steps through the list of
+players/enemies, tracking whose turn it is. It also tracks information useful to the DM. Each type of thing tracked is
+called an "entity". The types of entity tracked, and what details about them are tracked, are:
+    - Player/Basic:
+        - Base class, used for players
+        - Name, short code, initiative, conditions
+    - Enemy:
+        - Used for basic enemies who don't have any attacks/feats that can be used only a certain number of times per
+        long rest/encounter/short rest/etc.
+        - Same as Player/Basic + HP, temporary HP
+    - Enemy With Cooldowns:
+        - Used for enemies that have spells/some feat that they can only use a number of times per encounter/long rest.
+        - Same as Enemy + tracking of spell/feat uses
+    - Legendary Enemy:
+        - Legendary enemies have legendary actions and legendary resistances
+        - Legendary actions reset at the start of the Legendary Enemy's turn
+        - Legendary resistances don't reset over an encounter
+        - Same as Enemy With Cooldowns + legendary actions, legendary resistances
+
+------------------------------------------------------------------------------------------------------------------------
+Splash Screen
+------------------------------------------------------------------------------------------------------------------------
+User has the choice between:
+    - New encounter
+    - Load encounter from JSON
+    - Change settings file
+    - Exit
+
+------------------------------------------------------------------------------------------------------------------------
+Main Screen
+------------------------------------------------------------------------------------------------------------------------
+Header frame:
+    - Add new player/enemy
+    - Start turn order tracking
+    - Reset all changes to turn order (ie. reset to initiative order based on settings file)
+    - Reset all cooldowns
+    - Export state as JSON
+    - Return to main menu
+
+Main frame:
+    Vertical list of all entities
+    Vertical scrollbar
+
+    Each entity has:
+        - Up/down arrows to change turn order, seperate to initiative
+        - Name and short code
+        - Initiative
+        - Conditions
+        - Tracked feats/spells/legendary uses
+        - Button to reset tracked things to 0 uses
+        - Button to edit entity
