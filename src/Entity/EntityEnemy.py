@@ -87,3 +87,14 @@ class EntityEnemy(EntityBasic):
                 self.damage(to_damage_current)
         else:
             self.__current_hp = max(0, self.__current_hp - damage_amount)
+
+    def export_dict(self):
+        base_dict = super().export_dict()
+        base_dict["Class"] = "EntityEnemy"
+        for i in [
+            {"Max HP": self.__max_hp},
+            {"Current HP": self.__current_hp},
+            {"Temp HP": self.__temp_hp}
+        ]:
+            base_dict.update(i)
+        return base_dict

@@ -52,4 +52,12 @@ class EntityLegendary(EntityCharges):
 
     def reset_legend_res(self):
         self.__current_legend_res = self.__max_legend_res
-        
+
+    def export_dict(self):
+        base_dict = super().export_dict()
+        base_dict["Class"] = "EntityLegendary"
+        base_dict.update({"Max Legendary Actions": self.__max_legend_act})
+        base_dict.update({"Current Legendary Actions": self.__current_legend_act})
+        base_dict.update({"Max Legendary Resistances": self.__max_legend_res})
+        base_dict.update({"Current Legendary Resistances": self.__current_legend_res})
+        return base_dict

@@ -1,6 +1,8 @@
 from src.Entity.EntityEnemy import EntityEnemy
 from src.Other.GLOBAL_VARS import MAX_CHARGES
 
+from copy import deepcopy
+
 class EntityCharges(EntityEnemy):
     """
     Extends EntityEnemy to have custom charges.
@@ -29,8 +31,8 @@ class EntityCharges(EntityEnemy):
                 raise AssertionError("Tried to intialise EntityCharges with name " + entity_name + ", but the " +
                                      "max charges for " + key + " were zero or less.")
 
-        self.__max_charges = charges_to_track
-        self.__current_charges = charges_to_track
+        self.__max_charges = deepcopy(charges_to_track)
+        self.__current_charges = deepcopy(charges_to_track)
         super().__init__(entity_name, short_code, initiative, max_hp)
 
     def reduce_charge(self, charge_name: str):
@@ -74,3 +76,10 @@ class EntityCharges(EntityEnemy):
     def get_max_charges_all(self):
         """Returns dictionary of max charges."""
         return self.__max_charges
+
+    def export_dict(self):
+        base_dict = super().export_dict()
+        base_dict["Class"] = "EntityCharges"
+        base_dict.update({"Max Charges": self.__max_charges})
+        base_dict.update({"Current Charges": self.__current_charges})
+        return base_dict

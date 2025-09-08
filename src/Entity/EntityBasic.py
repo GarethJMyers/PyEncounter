@@ -81,3 +81,15 @@ class EntityBasic:
             raise AssertionError("Tried to get the condition " + condition_name + " for entity " + self.__name +
                                  ", but that condition does not exist in its condition dictionary.")
         return self.__conds[condition_name]
+
+    def export_dict(self):
+        """Returns a dictionary of object parameters for serialisation into JSON seperately."""
+        return_dict = {
+            "ClassType": "Entity",
+            "Class": "EntityBasic",
+            "Name": self.__name,
+            "Short Code": self.__code,
+            "Initiative": self.__initiative,
+            "Conditions": self.__conds
+        }
+        return return_dict
