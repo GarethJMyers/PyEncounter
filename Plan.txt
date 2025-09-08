@@ -51,6 +51,10 @@ Main frame:
         - Name and short code
         - Initiative
         - Conditions
-        - Tracked feats/spells/legendary uses
+        - Tracked feats/spells/legendary uses, IF IT IS OF CLASS THAT HAS SUCH
+        - Button to damage entity, IF IT IS OF CLASS THAT HAS SUCH
+        - Button to heal entity, IF IT IS OF CLASS THAT HAS SUCH
+        - Button to add temporary hit points, IF IT IS OF CLASS THAT HAS SUCH
         - Button to reset tracked things to 0 uses
         - Button to edit entity
+        - Button to remove entity
