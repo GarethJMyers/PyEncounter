@@ -15,40 +15,36 @@ class EntityCollection:
 
     Import can only occur if the entities dictionary is empty.
 
-    The entity objects are kept in a dictionary. The keys for the dictionary are the short codes, therefore short codes
-    cannot be reused. Names can be reused, however.
+    Entity objects are stored in a list in the turn order, ie. the first entity in the turn order is the zeroth entity
+    in the list. When a new entity is added, it is added to either:
+    - after the last entity with a greater or equal initiative
+    - before the first entity that has a lesser or equal initiative
+    depending on whether the global setting "AddNewEntityUnder" is true or false respectively.
 
-    The object is initialised to not contain any entities. Entities must be added after initialisation.
-
-    The parameter "turn order" is a list of every short code, in the turn order. ie. the first entity in the turn order
-    is the zeroth element of the list.
+    Note: There is nothing to stop the same entity being added multiple times, or two entities with the same parameters
+    being added.
     """
 
     def __init__(self):
-        self.__entities = {}
-        self.__turn_order = []
-        self.__initiatives = []
-        self.__round = 0
+        self.__entities = []
 
-    def add_entity(
-        self,
-        entity: Union[EntityBasic, EntityEnemy, EntityCharges, EntityLegendary]
-    ):
-        scode = entity.get_short_code()
-        initiative = entity.get_initiative()
-        self.__entities.update({scode: entity})
-        if len(self.__turn_order) == 0:
-            self.__turn_order.append(scode)
-            self.__initiatives.append(initiative)
-        elif GLOBAL_SETTINGS["AddNewEntityUnder"]:
-            # add turn order to after last turn order with same/greater initiative
-            init_greater_equal = [initiative < i for i in self.__initiatives]
-            if not True in init_greater_equal:
-                # all existing initiatives are less than new one, so add to top.
-                self.__turn_order.insert(0, scode)
-                self.__initiatives.insert(0, initiative)
-            else:
-                # new initiative is not highest, so need to add in middle or end
-                for i in reversed(range(len(init_greater_equal))):
-                    if init_greater_equal[i]:
-                        new_pos = i + 1
+    def add_entity(self, entity: Union[EntityBasic, EntityEnemy, EntityCharges, EntityLegendary]):
+        if len(self.__entities) < 1:
+            self.__entities.append(entity)
+        elif GLOBAL_SETTINGS["AddNewEntityUnder"]:  # add after the last entity with a greater or equal initiative
+            last_great_eq = -1
+            for i in range(len(self.__entities)):
+                if self.__entities[i].get_initiative() >= entity.get_initiative():
+                    last_great_eq = i
+            self.__entities.insert(last_great_eq + 1, entity)
+        else:  # add before the first entity that has a lesser or equal initiative
+            first_less_equal = -1
+            found_first_less_equal = False
+            i = 0
+            while (not found_first_less_equal) and (i < len(self.__entities)):
+                if self.__entities[i].get_initiative() <= entity.get_initiative():
+                    first_less_equal = i
+                    found_first_less_equal = True
+                i += 1
+            first_less_equal = max(0, first_less_equal)
+            self.__entities.insert(first_less_equal, entity)
