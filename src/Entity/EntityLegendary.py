@@ -29,16 +29,16 @@ class EntityLegendary(EntityCharges):
         self.__current_legend_res = num_legendary_res
         super().__init__(entity_name, short_code, initiative, max_hp, charges_to_track)
 
-    def get_legend_act(self):
+    def get_legend_act(self) -> int:
         return self.__current_legend_act
 
-    def get_max_legend_act(self):
+    def get_max_legend_act(self) -> int:
         return self.__max_legend_act
 
-    def get_legend_res(self):
+    def get_legend_res(self) -> int:
         return self.__current_legend_res
 
-    def get_max_legend_res(self):
+    def get_max_legend_res(self) -> int:
         return self.__max_legend_res
 
     def reduce_legend_act(self):

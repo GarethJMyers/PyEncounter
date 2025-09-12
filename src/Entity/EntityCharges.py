@@ -55,25 +55,25 @@ class EntityCharges(EntityEnemy):
         """Resets all charges for the entity."""
         self.__current_charges = self.__max_charges
 
-    def get_charges_single(self, charge_name: str):
+    def get_charges_single(self, charge_name: str) -> int:
         """Returns the number of charges remaining for a single thing that is tracked."""
         if charge_name not in list(self.__current_charges.keys()):
             raise AssertionError("Tried to return the charges for " + charge_name + " for entity " + self.__name +
                                  ", but that is not being tracked for that entity.")
         return self.__current_charges[charge_name]
 
-    def get_charges_all(self):
+    def get_charges_all(self) -> dict[str, int]:
         """Returns dictionary of current charges."""
         return self.__current_charges
 
-    def get_max_charges_single(self, charge_name: str):
+    def get_max_charges_single(self, charge_name: str) -> int:
         """Returns the max number of charges remaining for a single thing that is tracked."""
         if charge_name not in list(self.__current_charges.keys()):
             raise AssertionError("Tried to return the charges for " + charge_name + " for entity " + self.__name +
                                  ", but that is not being tracked for that entity.")
         return self.__max_charges[charge_name]
 
-    def get_max_charges_all(self):
+    def get_max_charges_all(self) -> dict[str, int]:
         """Returns dictionary of max charges."""
         return self.__max_charges
 

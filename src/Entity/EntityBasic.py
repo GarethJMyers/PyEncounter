@@ -67,19 +67,19 @@ class EntityBasic:
                                  ", but that condition does not exist in its condition dictionary.")
         self.__conds[condition_name] = set_on
 
-    def get_name(self):
+    def get_name(self) -> str:
         return self.__name
 
-    def get_short_code(self):
+    def get_short_code(self) -> str:
         return self.__code
 
-    def get_initiative(self):
+    def get_initiative(self) -> int:
         return self.__initiative
 
-    def get_condition_dict(self):
+    def get_condition_dict(self) -> dict[str, bool]:
         return self.__conds
 
-    def get_condition_state(self, condition_name: str):
+    def get_condition_state(self, condition_name: str) -> bool:
         if condition_name not in list(self.__conds.keys()):
             raise AssertionError("Tried to get the condition " + condition_name + " for entity " + self.__name +
                                  ", but that condition does not exist in its condition dictionary.")

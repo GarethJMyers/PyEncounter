@@ -80,3 +80,8 @@ class EntityCollection:
             raise IndexError("Tried to get entity " + str(turn_num) + " from EntityCollection, but not enough " +
                              "entities had been added.")
         return self.__entities[turn_num]
+
+    def export_to_dict(self):
+        """
+
+        """

@@ -61,13 +61,13 @@ class EntityEnemy(EntityBasic):
         else:
             self.__temp_hp = new_temp_hp
 
-    def get_max_hp(self):
+    def get_max_hp(self) -> int:
         return self.__max_hp
 
-    def get_current_hp(self):
+    def get_current_hp(self) -> int:
         return self.__current_hp
 
-    def get_temp_hp(self):
+    def get_temp_hp(self) -> int:
         return self.__temp_hp
 
     def heal(self, heal_amount: int):
