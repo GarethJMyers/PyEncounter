@@ -43,6 +43,29 @@ class EntityCharges(EntityEnemy):
 
         self.__current_charges[charge_name] = max(0, self.__current_charges[charge_name] - 1)
 
+    def set_all_charges(self, charge_dict: dict[str, int]):
+        """Sets all charges based on a current charge dictionary.
+        If the keys of charge_dict do not match the keys of the max charges dict, raise error.
+        If the charges of charge_dict are greater than max charges dict, raise error."""
+        new_keys = list(charge_dict.keys())
+        old_keys = list(self.__max_charges.keys())
+        acceptable = True
+        if len(new_keys) != len(old_keys):
+            acceptable = False
+        else:
+            i = 0
+            while acceptable and (i < len(new_keys)):
+                if new_keys[i] not in old_keys:
+                    acceptable = False
+                if charge_dict[new_keys[i]] > self.__max_charges[new_keys[i]]:
+                    acceptable = False
+                i += 1
+
+        if acceptable:
+            self.__current_charges = charge_dict
+        else:
+            raise AssertionError("Could not change the current charges: the provided dictionary is not suitable.")
+
     def reset_single_charge(self, charge_name:str):
         """Reset the current charges of a single thing back to its maximum."""
         if charge_name not in list(self.__current_charges.keys()):

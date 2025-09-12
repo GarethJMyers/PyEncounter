@@ -81,7 +81,104 @@ class EntityCollection:
                              "entities had been added.")
         return self.__entities[turn_num]
 
-    def export_to_dict(self):
-        """
+    def get_num_entities(self) -> int:
+        return len(self.__entities)
 
+    def export_dict(self):
         """
+        Returns a dictionary containing the details of the entity objects.
+        If no entities have been added yet, raise error.
+        """
+        num_ents = self.get_num_entities()
+        if num_ents < 1:
+            raise ValueError("Tried to export the entity collection, but it was empty.")
+        return_dict = {
+            "ClassType": "EntityCollection",
+            "NumEntities": num_ents,
+            "EntityList": [i.export_dict() for i in self.__entities]
+        }
+        return return_dict
+
+    def import_dict(self, d: dict):
+        """
+        Given a dictionary, import entity data.
+        If entities have already been added, raise error.
+        Expects the dictionary to:
+            - Have exactly 3 keys: "ClassType", "NumEntities", and "EntityList".
+            - The value of "ClassType" must be "EntityCollection"
+            - The "EntityList" must be a list of dictionaries
+            - the dictionaries in the list must:
+                - have a "ClassType" value that is "Entity".
+                - have a "Class" value that is one of "EntityBasic", "EntityEnemy", "EntityCharges", or "EntityLegendary"
+        Any deviations from these will result in an error.
+        """
+        possible_classes = ["EntityBasic", "EntityEnemy", "EntityCharges", "EntityLegendary"]
+        errdesc = ""
+        try:
+            if d["ClassType"] != "EntityCollection":  # KeyError if not exist
+                errdesc = "Not correct ClassType"
+                raise KeyError()
+            dlist = d["EntityList"]  # KeyError if not exist
+            errdesc = "Error with single entity object dictionary"
+            for i in dlist:
+                if i["ClassType"] != "Entity":  # KeyError if not exist, TypeError if i is not a dict
+                    raise KeyError()
+
+                # all 4 classes have these
+                ent_name = i["Name"]
+                ent_scode = i["Short Code"]
+                ent_init = i["Initiative"]
+                ent_cond = i["Conditions"]
+
+                # not all classes have these. Set as blank string then try to load
+                ent_maxhp = ""
+                ent_currhp = ""
+                ent_temphp = ""
+                ent_maxcharge = ""
+                ent_currcharge = ""
+                ent_maxlegac = ""
+                ent_currlegac = ""
+                ent_maxlegres = ""
+                ent_currlegres = ""
+                try:  # in order, ie. if "Max Charges" isn't a key then the ones under won't be either
+                    ent_maxhp = i["Max HP"]
+                    ent_currhp = i["Current HP"]
+                    ent_temphp = i["Temp HP"]
+                    ent_maxcharge = i["Max Charges"]
+                    ent_currcharge = i["Current Charges"]
+                    ent_maxlegac = i["Max Legendary Actions"]
+                    ent_currlegac = i["Current Legendary Actions"]
+                    ent_maxlegres = i["Max Legendary Resistances"]
+                    ent_currlegres = i["Current Legendary Resistances"]
+                except KeyError:
+                    pass
+                except:
+                    errdesc = "Unexpected error when accessing details for one entity."
+                    raise KeyError()
+
+                match i["Class"]:
+                    case "EntityBasic":
+                        new_obj = EntityBasic(
+                            entity_name=ent_name,
+                            short_code=ent_scode,
+                            initiative=ent_init
+                        )
+                    case "EntityEnemy":
+                        new_obj = EntityEnemy(
+                            entity_name=ent_name,
+                            short_code=ent_scode,
+                            initiative=ent_init,
+                            max_hp=ent_maxhp
+                        )
+                        new_obj.set_current_hp(ent_currhp)
+                        new_obj.set_temp_hp(ent_temphp)
+                    case "EntityCharges":
+                        new_obj = EntityCharges(
+                            entity_name=ent_name,
+                            short_code=ent_scode,
+                            initiative=ent_init,
+                            max_hp=ent_maxhp,
+                            charges_to_track=ent_maxcharge
+                        )
+
+
