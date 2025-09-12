@@ -4,7 +4,6 @@ from src.Entity.EntityCharges import EntityCharges
 from src.Entity.EntityLegendary import EntityLegendary
 from src.Other.Settings import GLOBAL_SETTINGS
 
-from json import dump, load
 from typing import Union
 
 class EntityCollection:
@@ -112,7 +111,6 @@ class EntityCollection:
                 - have a "Class" value that is one of "EntityBasic", "EntityEnemy", "EntityCharges", or "EntityLegendary"
         Any deviations from these will result in an error.
         """
-        possible_classes = ["EntityBasic", "EntityEnemy", "EntityCharges", "EntityLegendary"]
         errdesc = ""
         try:
             if d["ClassType"] != "EntityCollection":  # KeyError if not exist
@@ -180,5 +178,32 @@ class EntityCollection:
                             max_hp=ent_maxhp,
                             charges_to_track=ent_maxcharge
                         )
-
-
+                        new_obj.set_all_charges(ent_currcharge)
+                        new_obj.set_current_hp(ent_currhp)
+                        new_obj.set_temp_hp(ent_temphp)
+                    case "EntityLegendary":
+                        new_obj = EntityLegendary(
+                            entity_name=ent_name,
+                            short_code=ent_scode,
+                            initiative=ent_init,
+                            max_hp=ent_maxhp,
+                            charges_to_track=ent_maxcharge,
+                            num_legendary_actions=ent_maxlegac,
+                            num_legendary_res=ent_maxlegres
+                        )
+                        new_obj.set_all_charges(ent_currcharge)
+                        new_obj.set_current_hp(ent_currhp)
+                        new_obj.set_temp_hp(ent_temphp)
+                        for j in range(ent_maxlegac - ent_currlegac):
+                            new_obj.reduce_legend_act()
+                        for j in range(ent_maxlegres - ent_currlegres):
+                            new_obj.reduce_legend_res()
+                    case _:
+                        raise KeyError()
+                self.__entities.append(new_obj)
+        except KeyError:
+            raise AssertionError(errdesc)
+        except TypeError:
+            raise AssertionError(errdesc)
+        except:
+            raise AssertionError("Unknown error occurred importing EntityCollection from dict.")
